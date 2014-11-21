@@ -48,6 +48,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api',api.auth);
 app.use('/api/user/:name',api.user);
 app.post('/api/entry',doAddEntries);
+app.use('/api/entries/',page(Entry.getTotal,2),api.entries);
 app.use(user);
 app.use(messages);
 app.use('/',page(Entry.getTotal,2),listEntries);

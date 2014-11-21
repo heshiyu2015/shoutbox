@@ -1,5 +1,6 @@
 var basicAuth = require('basic-auth');
 var users = require('../../lib/user');
+var Entry = require('../../lib/entry');
 
 exports.auth = function(req,res,next){
   var remoteUser = basicAuth(req);
@@ -12,6 +13,7 @@ exports.auth = function(req,res,next){
     }
   });
 };
+
 exports.user = function(req,res,next){
   users.getByName(req.params.name,function(err,user){
     if(err) return next(err);
@@ -21,5 +23,14 @@ exports.user = function(req,res,next){
       id:user._id,
       name:user.name
     });
+  });
+};
+
+exports.entries = function(req,res,next){
+  var page = req.page;
+  console.log(page);//Test
+  Entry.getRangeEntry(page.from,page.to,function(err,entries){
+    if(err) return next(err);
+      res.json(entries);
   });
 };
